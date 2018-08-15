@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8" />
+    <title>MarkDown编辑器</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/editormd.min.css" />
+    <style>
+        code {
+            color: #c7254e
+        }
+    </style>
+</head>
+<body>
+<div id="layout">
+    <div id="test-editormd">
+                <textarea style="display:none;">
+</textarea>
+    </div>
+</div>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/editormd.min.js"></script>
+<script type="text/javascript">
+    var testEditor;
+    var target;
+    var editFlag = false;
+
+    $(function() {
+        var height =  document.documentElement.clientHeight - 20;
+        testEditor = editormd("test-editormd", {
+            width   : "100%",
+            height  : height,
+            syncScrolling : "single",
+            path    : "./lib/",
+            onload : function() {
+                target = this;
+            },
+            imageUpload : true,
+            imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+
+            onchange : function() {
+                editFlag = true;
+            },
+            flowChart : true
+        });
+    });
+
+
+    function setMarkdown(str) {
+        str = str.replace(/&quots;/g, '"');
+        str = str.replace(/&apos;/g, "'");
+        str = str.replace(/&rn;/g, "\r\n");
+
+        target.setMarkdown(str);
+    }
+
+    function getMarkdown() {
+        return target.getMarkdown();
+    }
+
+    function hasEdit() {
+        return editFlag;
+    }
+
+    function resize() {
+        testEditor.resize("100%", document.documentElement.clientHeight - 20);
+    }
+</script>
+</body>
+</html>
